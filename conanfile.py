@@ -51,7 +51,7 @@ enable_pdf=False
 enable_util=True
 enable_net=True
 enable_netssl=True
-enable_netssl_win=True
+enable_netssl_win=False
 enable_crypto=True
 enable_data=True
 enable_data_sqlite=True
@@ -121,7 +121,7 @@ cxx_14=False
         packages = ["CppUnit", "Crypto", "Data", "Data/MySQL", "Data/ODBC", "Data/SQLite",
                     "Foundation", "JSON", "MongoDB", "Net", "Util",
                     "XML", "Zip"]
-        if self.settings.os == "Windows":
+        if self.settings.os == "Windows" and self.options.force_openssl == False:
             packages.append("NetSSL_Win")
         else:
             packages.append("NetSSL_OpenSSL")
@@ -163,7 +163,7 @@ cxx_14=False
                  else ("d" if self.settings.build_type=="Debug" else "")
         for flag, lib in libs:
             if getattr(self.options, flag):
-                if self.settings.os == "Windows" and flag == "enable_netssl":
+                if self.settings.os == "Windows" and flag == "enable_netssl" and self.options.force_openssl == False:
                     continue
                 if self.settings.os != "Windows" and flag == "enable_netssl_win":
                     continue
